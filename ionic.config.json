@@ -1,0 +1,7 @@
+{
+  "name": "who-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
