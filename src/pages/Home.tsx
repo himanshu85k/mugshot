@@ -6,7 +6,7 @@ import * as faceapi from 'face-api.js'
 
 const MODEL_URL = process.env.PUBLIC_URL + '/models';
 
-async function loadModels(setLoading: any) {
+async function loadModels(setLoading: React.Dispatch<React.SetStateAction<boolean>>) {
   console.log('loading models')
   setLoading(true)
   await faceapi.loadSsdMobilenetv1Model(MODEL_URL)
@@ -17,23 +17,30 @@ async function loadModels(setLoading: any) {
 
 async function recognize() {
   console.log('detecting')
-  const image = imageRef.current;
+  const image = (imageRef.current as unknown) as HTMLImageElement;
+  let canvas = (canvasRef.current as unknown) as HTMLCanvasElement;
   let fullFaceDescriptions = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
   console.log('detected', fullFaceDescriptions)
-  
-  const canvas: HTMLCanvasElement = drawImageOnCanvas(image, canvasRef.current);
-  drawDetectionsOnCanvas(fullFaceDescriptions, image, canvas); 
+
+  canvas = drawImageOnCanvas(image, canvas);
+  drawDetectionsOnCanvas(fullFaceDescriptions, image, canvas);
 }
 
-function drawImageOnCanvas(image: any, canvas: any): HTMLCanvasElement {
+function drawImageOnCanvas(image: HTMLImageElement, canvas: HTMLCanvasElement): HTMLCanvasElement {
   canvas.width = image.width;
   canvas.height = image.height;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   ctx.drawImage(image, 0, 0);
   return canvas;
 }
 
-function drawDetectionsOnCanvas(fullFaceDescriptions: any, image: any, canvas: HTMLCanvasElement) {
+function drawDetectionsOnCanvas(
+  fullFaceDescriptions: faceapi.WithFaceDescriptor<faceapi.WithFaceLandmarks<{
+    detection: faceapi.FaceDetection;
+  }, faceapi.FaceLandmarks68>>[],
+  image: HTMLImageElement,
+  canvas: HTMLCanvasElement
+) {
   const dimensions = {
     width: image.width,
     height: image.height
@@ -42,8 +49,8 @@ function drawDetectionsOnCanvas(fullFaceDescriptions: any, image: any, canvas: H
   faceapi.draw.drawDetections(canvas, resizedDimensions);
 }
 
-let imageRef: any;
-let canvasRef: any;
+let imageRef: React.MutableRefObject<null>;
+let canvasRef: React.MutableRefObject<null>;
 
 const Home: React.FC = () => {
 
@@ -62,7 +69,7 @@ const Home: React.FC = () => {
         {isLoading ?
           'Loading...' : <IonButton onClick={recognize}>Choose One</IonButton>}
         <img src={process.env.PUBLIC_URL + '/sample.jpeg'} alt="" ref={imageRef} />
-        <canvas ref={canvasRef}/>
+        <canvas ref={canvasRef} />
       </IonContent>
     </IonPage>
   );
