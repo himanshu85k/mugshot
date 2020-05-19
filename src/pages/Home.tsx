@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonButton } from '@ionic/react';
+import { IonContent, IonPage, IonButton, IonLoading, IonInput } from '@ionic/react';
 import React, { useEffect, useRef, useState } from 'react';
 import './Home.css';
 
@@ -15,8 +15,9 @@ async function loadModels(setLoading: React.Dispatch<React.SetStateAction<boolea
   setLoading(false)
 }
 
-async function recognize() {
-  console.log('detecting')
+async function recognize(setLoading: React.Dispatch<React.SetStateAction<boolean>>) {
+  setLoading(true);
+  
   const image = (imageRef.current as unknown) as HTMLImageElement;
   let canvas = (canvasRef.current as unknown) as HTMLCanvasElement;
   let fullFaceDescriptions = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
@@ -24,6 +25,7 @@ async function recognize() {
 
   canvas = drawImageOnCanvas(image, canvas);
   drawDetectionsOnCanvas(fullFaceDescriptions, image, canvas);
+  setLoading(false);
 }
 
 function drawImageOnCanvas(image: HTMLImageElement, canvas: HTMLCanvasElement): HTMLCanvasElement {
@@ -58,6 +60,7 @@ const Home: React.FC = () => {
   canvasRef = useRef(null);
 
   const [isLoading, setLoading] = useState(true);
+  const [winnerText, setWinnerText] = useState("Winner pays the bill");
 
   useEffect(() => {
     loadModels(setLoading)
@@ -66,8 +69,12 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        {isLoading ?
-          'Loading...' : <IonButton onClick={recognize}>Choose One</IonButton>}
+        <IonLoading isOpen={isLoading} showBackdrop={true}/>
+
+        <IonInput value={winnerText} onIonChange={e => setWinnerText(e.detail.value as string)} clearInput></IonInput>
+        
+        <IonButton onClick={() => { recognize(setLoading); }} >Choose One</IonButton>
+        
         <img src={process.env.PUBLIC_URL + '/sample.jpeg'} alt="" ref={imageRef} />
         <canvas ref={canvasRef} />
       </IonContent>
