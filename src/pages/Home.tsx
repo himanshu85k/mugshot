@@ -1,64 +1,69 @@
-import { IonContent, IonPage, IonButton, IonLoading, IonInput } from '@ionic/react';
+import { IonContent, IonPage, IonLoading, IonInput, IonFab, IonIcon, IonFabButton } from '@ionic/react';
 import React, { useEffect, useRef, useState } from 'react';
 import './Home.css';
 
 import * as faceapi from 'face-api.js'
 
+import { addNewToGallery } from '../services/camera.services';
+
 const MODEL_URL = process.env.PUBLIC_URL + '/models';
 
 async function loadModels(setLoading: React.Dispatch<React.SetStateAction<boolean>>) {
-  console.log('loading models')
-  setLoading(true)
   await faceapi.loadSsdMobilenetv1Model(MODEL_URL)
-  await faceapi.loadFaceLandmarkModel(MODEL_URL)
-  await faceapi.loadFaceRecognitionModel(MODEL_URL)
+  // await faceapi.loadFaceLandmarkModel(MODEL_URL)
+  // await faceapi.loadFaceRecognitionModel(MODEL_URL)
   setLoading(false)
 }
 
-async function recognize(setLoading: React.Dispatch<React.SetStateAction<boolean>>) {
+async function recognize(photoPath: string, setLoading: React.Dispatch<React.SetStateAction<boolean>>) {
   setLoading(true);
-  
-  const image = (imageRef.current as unknown) as HTMLImageElement;
-  let canvas = (canvasRef.current as unknown) as HTMLCanvasElement;
-  let fullFaceDescriptions = await faceapi.detectAllFaces(image).withFaceLandmarks().withFaceDescriptors()
+  let canvas = canvasRef.current as unknown as HTMLCanvasElement;
+  canvas = drawImageOnCanvas(photoPath, canvas);
+  let fullFaceDescriptions = await faceapi.detectAllFaces(canvas);
   console.log('detected', fullFaceDescriptions)
-
-  canvas = drawImageOnCanvas(image, canvas);
-  drawDetectionsOnCanvas(fullFaceDescriptions, image, canvas);
+  drawDetections(fullFaceDescriptions, canvas);
   setLoading(false);
 }
 
-function drawImageOnCanvas(image: HTMLImageElement, canvas: HTMLCanvasElement): HTMLCanvasElement {
-  canvas.width = image.width;
-  canvas.height = image.height;
+function drawImageOnCanvas(photoPath: string, canvas: HTMLCanvasElement): HTMLCanvasElement {
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-  ctx.drawImage(image, 0, 0);
+  const image = new Image();
+  image.onload = function () {
+    const viewWidth = (divRef.current as unknown as HTMLDivElement).offsetWidth;
+    const scale = viewWidth / image.width;
+    canvas.width = viewWidth;
+    canvas.height = image.height * scale;
+    ctx.drawImage(image, 0, 0, viewWidth, image.height * scale);
+  };
+  image.src = photoPath;
   return canvas;
 }
 
-function drawDetectionsOnCanvas(
-  fullFaceDescriptions: faceapi.WithFaceDescriptor<faceapi.WithFaceLandmarks<{
-    detection: faceapi.FaceDetection;
-  }, faceapi.FaceLandmarks68>>[],
-  image: HTMLImageElement,
-  canvas: HTMLCanvasElement
-) {
-  const dimensions = {
-    width: image.width,
-    height: image.height
-  }
-  const resizedDimensions = faceapi.resizeResults(fullFaceDescriptions, dimensions);
-  faceapi.draw.drawDetections(canvas, resizedDimensions);
+function drawDetections(detections: any[], canvas: HTMLCanvasElement) {
+  const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+  detections.forEach((detection) => {
+    context.beginPath();
+    context.lineWidth = 3;
+    context.strokeStyle = "white";
+    const box = detection.box;
+    context.rect(box.x, box.y, box.width, box.height);
+    context.stroke();
+  })
 }
 
-let imageRef: React.MutableRefObject<null>;
+async function handleCameraClick(setLoading: React.Dispatch<React.SetStateAction<boolean>>) {
+  const photo = await addNewToGallery();
+  recognize(photo.webviewPath, setLoading);
+}
+
+
 let canvasRef: React.MutableRefObject<null>;
+let divRef: React.MutableRefObject<null>;
 
 const Home: React.FC = () => {
 
-  imageRef = useRef(null);
   canvasRef = useRef(null);
-
+  divRef = useRef(null);
   const [isLoading, setLoading] = useState(true);
   const [winnerText, setWinnerText] = useState("Winner pays the bill");
 
@@ -69,16 +74,23 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <IonLoading isOpen={isLoading} showBackdrop={true}/>
+        <div ref={divRef} style={{ maxWidth: 800, margin: "auto", height: "100%" }}>
+          <IonLoading isOpen={isLoading} showBackdrop={true} />
 
-        <IonInput value={winnerText} onIonChange={e => setWinnerText(e.detail.value as string)} clearInput></IonInput>
-        
-        <IonButton onClick={() => { recognize(setLoading); }} >Choose One</IonButton>
-        
-        <img src={process.env.PUBLIC_URL + '/sample.jpeg'} alt="" ref={imageRef} />
-        <canvas ref={canvasRef} />
+          <IonInput value={winnerText} onIonChange={e => setWinnerText(e.detail.value as string)} clearInput></IonInput>
+
+          <canvas ref={canvasRef} />
+
+          <IonFab vertical="bottom" horizontal="center" slot="fixed">
+            <IonFabButton onClick={() => handleCameraClick(setLoading)}>
+              <IonIcon name="camera"></IonIcon>
+            </IonFabButton>
+          </IonFab>
+        </div>
+
+
       </IonContent>
-    </IonPage>
+    </IonPage >
   );
 };
 
