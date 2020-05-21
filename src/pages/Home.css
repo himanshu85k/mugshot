@@ -1,0 +1,18 @@
+.main-container {
+    max-width: 800px;
+    margin: auto;
+    height: 100%;
+    text-align: center;
+}
+
+.winner-text {
+    font-size: 34px;
+    padding: 10px;
+    text-align: center;
+}
+
+.recognition-text {
+    font-size: 24px;
+    padding: 10px;
+    text-align: center;
+}

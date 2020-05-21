@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonLoading, IonInput, IonFab, IonIcon, IonFabButton } from '@ionic/react';
+import { IonContent, IonPage, IonLoading, IonInput, IonFab, IonIcon, IonFabButton, IonText } from '@ionic/react';
 import React, { useEffect, useRef, useState } from 'react';
 import './Home.css';
 
@@ -9,10 +9,17 @@ async function handleCameraClick(
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   canvasRef: React.MutableRefObject<null>,
   divRef: React.MutableRefObject<null>,
+  setRecognitionText: React.Dispatch<React.SetStateAction<string>>
 ) {
   const photo = await addNewToGallery();
   setLoading(true);
-  await recognize(photo.webviewPath, canvasRef, divRef);
+  setRecognitionText("");
+  const count = await recognize(photo.webviewPath, canvasRef, divRef);
+  if (count === 0) {
+    setRecognitionText("No faces were found");
+  } else if (count === 1) {
+    setRecognitionText("Seems like you are the only one here");
+  }
   setLoading(false);
 }
 
@@ -21,6 +28,7 @@ const Home: React.FC = () => {
   const canvasRef = useRef(null);
   const divRef = useRef(null);
   const [isLoading, setLoading] = useState(true);
+  const [recognitionText, setRecognitionText] = useState("");
   const [winnerText, setWinnerText] = useState("Winner pays the bill");
 
   useEffect(() => {
@@ -30,15 +38,19 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <div ref={divRef} style={{ maxWidth: 800, margin: "auto", height: "100%" }}>
+        <div ref={divRef} className="main-container">
           <IonLoading isOpen={isLoading} showBackdrop={true} />
 
-          <IonInput value={winnerText} style={{fontSize: 28, padding: 10}} onIonChange={e => setWinnerText(e.detail.value as string)} clearInput></IonInput>
+          <IonInput value={winnerText} className="winner-text"
+            onIonChange={e => setWinnerText(e.detail.value as string)} clearInput></IonInput>
 
           <canvas ref={canvasRef} />
+          <br />
+          <IonText className="recognition-text">{recognitionText}</IonText>
 
           <IonFab vertical="bottom" horizontal="center" slot="fixed">
-            <IonFabButton onClick={() => handleCameraClick(setLoading, canvasRef, divRef)}>
+            <IonFabButton
+              onClick={() => handleCameraClick(setLoading, canvasRef, divRef, setRecognitionText)}>
               <IonIcon name="camera"></IonIcon>
             </IonFabButton>
           </IonFab>
