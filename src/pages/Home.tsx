@@ -14,7 +14,7 @@ import { FaceDetection } from 'face-api.js';
 const CAPTURE_IMAGE_STAGE = 'CAPTURE_IMAGE_STAGE';
 const SHUFFLE_FACES_STAGE = 'SHUFFLE_FACES_STAGE';
 
-export const Home: React.FC = () => {
+const Home: React.FC = () => {
 
   const canvasRef = useRef(null);
   const divRef = useRef(null);
@@ -103,6 +103,8 @@ export const Home: React.FC = () => {
           </IonPage>
   );
 }
+
+export default Home;
 
 // ion copy android
 // npx cap open android
