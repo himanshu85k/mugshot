@@ -9,8 +9,8 @@ export function ResultModal(props: any) {
                 <div style={{ display: "flex", flexDirection:"row", justifyContent: "flex-end", width: "100%" }}>
                     <IonButton size="small" fill="outline" onClick={() => props.setResultModalVisible(false)}>Close</IonButton>
                 </div>
-                <img src={props.winnerImage} alt="winner" />
-                <p>{props.winnerText}</p>
+                <img src={props.chosenOne.image} alt="You're chosen" />
+                <p>{props.chosenOne.text}</p>
             </div>
         </IonModal >
 
