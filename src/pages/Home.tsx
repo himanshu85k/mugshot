@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './Home.css';
 
 import { addNewToGallery } from '../services/camera.service';
-import { recognize, loadModels, getCurrentFaceAsURL } from '../services/faceRecognitionAndDrawing.service'
+import { detectFaces, loadModels, getCurrentFaceAsURL, chooseOne, drawImageOnCanvas } from '../services/faceRecognitionAndDrawing.service'
 import { ResultModal } from './ResultModal';
 import { FaceDetection } from 'face-api.js';
 
@@ -25,30 +25,63 @@ const Home: React.FC = () => {
     loadModels(setLoading)
   }, []);
 
-  async function handleCameraClick() {
+  function handleCameraClick() {
+    // setLoading(true);
+    performLoadings();
+    // const photo = await addNewToGallery();
+    // const canvas =  canvasRef.current as unknown as HTMLCanvasElement;
+    // const canvasParentDiv = divRef.current as unknown as HTMLDivElement;
+    // await drawImageOnCanvas(photo.webviewPath, canvasParentDiv, canvas);
+    // console.log('image drawn on canvas');
+    // const detectedFaces = await detectFaces(canvas);
+    // console.log('faces detected, ', detectedFaces);
+
+
+    // if (!detectedFaces || detectedFaces.length === 0) {
+    //   setHintText("Can't find anyone. Try Again?");
+    // } else if (detectedFaces.length === 1) {
+    //   setHintText("Seems like you are the only one here. Try Again?");
+    //   setWinnerImage(getCurrentFaceAsURL(canvas, detectedFaces[0]));
+    //   setWinnerText("Pays the bill");
+    //   setResultModalVisible(true);
+    // } else {
+    //   setFaces(detectedFaces);
+    //   console.log('choosing face');
+    //   const currentFace = await chooseOne(detectedFaces, canvas, 6000);
+    //   console.log('chosen ', currentFace);
+    //   setWinnerImage(getCurrentFaceAsURL(canvas, detectedFaces[currentFace]));
+    //   setWinnerText("Pays the bill");
+    //   setResultModalVisible(true);
+    // }
+    // setLoading(false);
+  }
+
+  async function performLoadings() {
     const photo = await addNewToGallery();
-    setLoading(true);
-    const { fullFaceDescriptions: detectedFaces, current: currentFace, canvasWithoutFaceMarkers: cwfm }
-      = await recognize(photo.webviewPath, canvasRef, divRef) as {
-        fullFaceDescriptions: FaceDetection[],
-        current: number, canvasWithoutFaceMarkers: HTMLCanvasElement
-      };
+    const canvas =  canvasRef.current as unknown as HTMLCanvasElement;
+    const canvasParentDiv = divRef.current as unknown as HTMLDivElement;
+    await drawImageOnCanvas(photo.webviewPath, canvasParentDiv, canvas);
+    console.log('image drawn on canvas');
+    const detectedFaces = await detectFaces(canvas);
+    console.log('faces detected, ', detectedFaces);
+
+
     if (!detectedFaces || detectedFaces.length === 0) {
       setHintText("Can't find anyone. Try Again?");
     } else if (detectedFaces.length === 1) {
       setHintText("Seems like you are the only one here. Try Again?");
-      setWinnerImage(
-        getCurrentFaceAsURL(cwfm as unknown as HTMLCanvasElement, detectedFaces[currentFace]));
+      setWinnerImage(getCurrentFaceAsURL(canvas, detectedFaces[0]));
       setWinnerText("Pays the bill");
       setResultModalVisible(true);
     } else {
       setFaces(detectedFaces);
-      setWinnerImage(
-        getCurrentFaceAsURL(canvasRef.current as unknown as HTMLCanvasElement, detectedFaces[currentFace]));
+      console.log('choosing face');
+      const currentFace = await chooseOne(detectedFaces, canvas, 6000);
+      console.log('chosen ', currentFace);
+      setWinnerImage(getCurrentFaceAsURL(canvas, detectedFaces[currentFace]));
       setWinnerText("Pays the bill");
       setResultModalVisible(true);
     }
-    setLoading(false);
   }
 
   return (
