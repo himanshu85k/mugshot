@@ -14,12 +14,12 @@ async function handleCameraClick(
   const photo = await addNewToGallery();
   setLoading(true);
   setRecognitionText("");
-  const count = await recognize(photo.webviewPath, canvasRef, divRef);
-  if (count === 0) {
-    setRecognitionText("No faces were found");
-  } else if (count === 1) {
-    setRecognitionText("Seems like you are the only one here");
-  }
+  const count = await recognize(photo.webviewPath, canvasRef, divRef) ;
+  // if (count?.fullFaceDescriptions.length === 0) {
+  //   setRecognitionText("No faces were found");
+  // } else if (count?.fullFaceDescriptions.length === 1) {
+  //   setRecognitionText("Seems like you are the only one here");
+  // }
   setLoading(false);
 }
 
