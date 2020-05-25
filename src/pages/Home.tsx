@@ -10,12 +10,11 @@ import { addNewToGallery } from '../helpers/cameraHelper';
 import * as faceHelper from '../helpers/faceHelper'
 import { ResultModal } from './ResultModal';
 import { FaceDetection } from 'face-api.js';
-import { stringify } from 'querystring';
 
 const CAPTURE_IMAGE_STAGE = 'CAPTURE_IMAGE_STAGE';
 const SHUFFLE_FACES_STAGE = 'SHUFFLE_FACES_STAGE';
 
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
 
   const canvasRef = useRef(null);
   const divRef = useRef(null);
@@ -100,15 +99,12 @@ const Home: React.FC = () => {
         <ResultModal isResultModalVisible={isResultModalVisible}
           setResultModalVisible={setResultModalVisible}
           chosenOne={chosenOne} />
-      </IonContent>
-    </IonPage >
+          </IonContent>
+          </IonPage>
   );
-};
+}
 
-export default Home;
-
-// ionic build
-// ionic capacitor copy android
+// ion copy android
 // npx cap open android
 
 // ionic capacitor sync
