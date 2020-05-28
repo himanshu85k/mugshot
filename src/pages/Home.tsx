@@ -1,6 +1,6 @@
 import {
   IonContent, IonPage, IonLoading, IonFab, IonIcon, IonFabButton,
-  IonText, IonButton
+  IonText, IonButton, IonButtons, isPlatform
 } from '@ionic/react';
 import { cameraOutline, shuffleOutline } from 'ionicons/icons';
 import React, { useEffect, useRef, useState } from 'react';
@@ -19,7 +19,7 @@ const Home: React.FC = () => {
   const canvasRef = useRef(null);
   const divRef = useRef(null);
   const [isLoading, setLoading] = useState(true);
-  const [hintText, setHintText] = useState("Click a group selfie to start.");
+  const [hintText, setHintText] = useState('Click a group selfie to start.');
   const [isResultModalVisible, setResultModalVisible] = useState(false);
   const [chosenOne, setChosenOne] = useState({ image: '', text: '' });
   const [faces, setFaces] = useState<FaceDetection[]>([]);
@@ -34,7 +34,16 @@ const Home: React.FC = () => {
     setLoading(true);
     setFaces([]);
     const photo = await addNewToGallery();
-    drawCanvasAndFaceDetections(photo);
+    if (photo) {
+      drawCanvasAndFaceDetections(photo);
+    } else {
+      setLoading(false);
+    }
+  }
+
+  async function handleFilePick(e: any) {
+    setLoading(true);
+    drawCanvasAndFaceDetections({ webviewPath: URL.createObjectURL(e.target.files[0]) })
   }
 
   function handleShuffleClick() {
@@ -42,10 +51,11 @@ const Home: React.FC = () => {
       image: '',
       text: ''
     });
-    faceHelper.chooseOne(faces,
+    faceHelper.chooseOne(
+      faces,
       canvasRef.current as unknown as HTMLCanvasElement,
-      3000, (chosenIndex) => {
-        console.log(`called back ${chosenIndex}`);
+      3000,
+      (chosenIndex) => {
         setChosenOne({
           image: faceHelper.getCurrentFaceAsURL(
             canvasRef.current as unknown as HTMLCanvasElement, faces[chosenIndex]
@@ -53,22 +63,23 @@ const Home: React.FC = () => {
           text: 'Winner pays the bill'
         });
         setResultModalVisible(true);
-      });
+      }
+    );
   }
 
-  async function drawCanvasAndFaceDetections(photo: { filepath: string, webviewPath: string }) {
+  async function drawCanvasAndFaceDetections(photo: { webviewPath: string }) {
     const canvas = canvasRef.current as unknown as HTMLCanvasElement;
     const canvasParentDiv = divRef.current as unknown as HTMLDivElement;
     await faceHelper.drawImageOnCanvas(photo.webviewPath, canvasParentDiv, canvas);
     const detectedFaces = await faceHelper.detectFaces(canvas) as FaceDetection[];
     faceHelper.drawDetections(detectedFaces, canvas, -1);
-    // TODO: Add more faces
+    // TODO: Add ability to tag more faces
     if (detectedFaces.length === 0) {
-      setHintText("Can't find any faces. Try Again?");
+      setHintText('Can\'t find any faces. Try Again?');
     } else if (detectedFaces.length === 1) {
-      setHintText("Seems like you are the only one here. Try Again with a few friends around?");
+      setHintText('Seems like you are the only one here. Try Again with a few friends around?');
     } else {
-      setHintText("Done! Tap shuffle to start!");
+      setHintText('Done! Tap shuffle to start!');
       setFaces(detectedFaces);
       setStage(SHUFFLE_FACES_STAGE);
     }
@@ -87,26 +98,31 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <div ref={divRef} className="main-container">
+        <div ref={divRef} className='main-container'>
           <IonLoading isOpen={isLoading} showBackdrop={true} />
-          <IonText className="recognition-text">{hintText}</IonText>
-          <IonFab vertical="bottom" horizontal="center" slot="fixed">
-            {fabButton}
+          <IonText className='recognition-text'>{hintText}</IonText>
+          <IonFab vertical='bottom' horizontal='center' slot='fixed'>
+            <IonButtons>
+              {fabButton}
+              {
+                stage === CAPTURE_IMAGE_STAGE && isPlatform('desktop') &&
+                <input type='file' accept='image/png, image/jpeg' onChange={handleFilePick} />
+              }
+            </IonButtons>
           </IonFab>
           <canvas ref={canvasRef} /><br />
-          <IonButton onClick={() => setResultModalVisible(true)}>Show Modal</IonButton>
         </div>
         <ResultModal isResultModalVisible={isResultModalVisible}
           setResultModalVisible={setResultModalVisible}
           chosenOne={chosenOne} />
-          </IonContent>
-          </IonPage>
+      </IonContent>
+    </IonPage>
   );
 }
 
 export default Home;
 
-// ion copy android
+// ionic copy android
 // npx cap open android
 
 // ionic capacitor sync
