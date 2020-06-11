@@ -1,6 +1,6 @@
 import {
   IonContent, IonPage, IonLoading, IonFab, IonIcon, IonFabButton,
-  IonText, IonButton, IonButtons, isPlatform
+  IonText, IonButtons, isPlatform
 } from '@ionic/react';
 import { cameraOutline, shuffleOutline } from 'ionicons/icons';
 import React, { useEffect, useRef, useState } from 'react';

@@ -82,7 +82,6 @@ function animate(detections: any[], canvas: HTMLCanvasElement,
     if (boxChangeTime > BOX_COLOR_CHANGE_DURATION) {
         boxChangeTime = 0;
         current = Math.floor(Math.random() * detections.length);
-        // TODO: Not evenly distributed
         drawDetections(detections, canvas, current);
     }
     if (currentTime < animationEndTime) {
@@ -112,7 +111,7 @@ export function getCurrentFaceAsURL(
 ): string {
     const { x, y, width, height } = face.box;
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-    const imageData = ctx.getImageData(x, y, width, height) as ImageData;
+    const imageData = ctx.getImageData(x + 2, y + 2, width - 4, height - 4) as ImageData;
 
     const tempCanvas: HTMLCanvasElement = document.createElement('canvas');
     tempCanvas.width = width;
