@@ -11,6 +11,8 @@ import * as faceHelper from '../helpers/faceHelper'
 import { ResultModal } from './ResultModal';
 import { FaceDetection } from 'face-api.js';
 
+import truthDareList from '../truthDareList'
+
 const CAPTURE_IMAGE_STAGE = 'CAPTURE_IMAGE_STAGE';
 const SHUFFLE_FACES_STAGE = 'SHUFFLE_FACES_STAGE';
 
