@@ -99,8 +99,11 @@ const Home: React.FC = () => {
       <IonContent>
         <div ref={divRef} className='main-container'>
           <IonLoading isOpen={isLoading} showBackdrop={true} />
-          <IonText className='recognition-text'>{hintText}</IonText>
-          <IonFab vertical='bottom' horizontal='center' slot='fixed'>
+          {
+            hintText ?
+              <IonText className='hint-text'>{hintText}</IonText> : ''
+          }
+          <IonFab className='fab-button' horizontal='center'>
             <IonButtons>
               {fabButton}
               {
@@ -109,7 +112,10 @@ const Home: React.FC = () => {
               }
             </IonButtons>
           </IonFab>
-          <canvas style={{ width: "100%" }} ref={canvasRef} /><br />
+          <canvas
+            style={{ width: "100%" }}
+            ref={canvasRef}
+          />
         </div>
         <ResultModal
           isResultModalVisible={isResultModalVisible}

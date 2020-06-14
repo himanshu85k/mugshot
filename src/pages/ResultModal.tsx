@@ -33,7 +33,7 @@ export function ResultModal(props: any) {
             </IonButtons>;
     } else {
         footer =
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems:'center', width: '100%' }}>
+            <div className="flex-column">
                 <p style={{color: 'white'}}>{props.chosenText}</p><br />
                 <IonFabButton onClick={props.handleShuffleClick}>
                     <IonIcon icon={shuffleOutline}></IonIcon>
@@ -43,8 +43,8 @@ export function ResultModal(props: any) {
 
     return (
         <IonModal isOpen={props.isResultModalVisible} onDidDismiss={() => props.setResultModalVisible(false)}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', width: '100%' }}>
+            <div className="flex-column">
+                <div className="flex-row skip-button">
                     <IonButton size='small' fill='outline' shape="round" onClick={() => props.setResultModalVisible(false)}>
                         Skip
                     </IonButton>
