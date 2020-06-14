@@ -22,19 +22,19 @@ export function ResultModal(props: any) {
     if (!props.chosenText) {
         footer =
             <IonButtons>
-                <IonButton size='large' color="secondary" fill="solid" expand="block"
+                <IonButton size='large' color="secondary" fill="solid" expand="block" shape="round"
                     onClick={() => handleTruthDareClick('truth', props.setChosenText)}>
                     Truth
                 </IonButton>
-                <IonButton size='large' color="secondary" fill="solid" expand="block"
+                <IonButton size='large' color="secondary" fill="solid" expand="block" shape="round"
                     onClick={() => handleTruthDareClick('dare', props.setChosenText)}>
                     Dare
                 </IonButton>
             </IonButtons>;
     } else {
         footer =
-            <div>
-                <p>{props.chosenText}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems:'center', width: '100%' }}>
+                <p>{props.chosenText}</p><br />
                 <IonFabButton onClick={props.handleShuffleClick}>
                     <IonIcon icon={shuffleOutline}></IonIcon>
                 </IonFabButton>
@@ -45,7 +45,7 @@ export function ResultModal(props: any) {
         <IonModal isOpen={props.isResultModalVisible} onDidDismiss={() => props.setResultModalVisible(false)}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', width: '100%' }}>
-                    <IonButton size='small' fill='outline' onClick={() => props.setResultModalVisible(false)}>
+                    <IonButton size='small' fill='outline' shape="round" onClick={() => props.setResultModalVisible(false)}>
                         Skip
                     </IonButton>
                 </div>
