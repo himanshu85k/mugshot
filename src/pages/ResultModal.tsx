@@ -34,7 +34,7 @@ export function ResultModal(props: any) {
     } else {
         footer =
             <div style={{ display: 'flex', flexDirection: 'column', alignItems:'center', width: '100%' }}>
-                <p>{props.chosenText}</p><br />
+                <p style={{color: 'white'}}>{props.chosenText}</p><br />
                 <IonFabButton onClick={props.handleShuffleClick}>
                     <IonIcon icon={shuffleOutline}></IonIcon>
                 </IonFabButton>
