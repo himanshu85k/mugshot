@@ -10,6 +10,8 @@ const BOX_COLOR_CHANGE_DURATION = 80;
 const BOX_HIGHLIGHT_COLOR = '#0ABF00';
 const BOX_NORMAL_COLOR = '#FFFFFF';
 const MODEL_URL = process.env.PUBLIC_URL + '/models';
+const IMAGE_RESIZE_TO_WIDTH = 2000;
+const BOX_LINE_WIDTH_MULTIPLY_FACTOR = 0.004;
 
 export async function loadModels(setLoading: React.Dispatch<React.SetStateAction<boolean>>) {
     try {
@@ -48,12 +50,12 @@ export function drawImageOnCanvas(
     const imageLoaderPromise = new Promise<HTMLCanvasElement>((resolve, reject) => {
         try {
             image.onload = function () {
-                const viewWidth = div.offsetWidth;
+                const viewWidth = Math.min(IMAGE_RESIZE_TO_WIDTH, image.width);
                 const scale = viewWidth / image.width;
                 canvas.width = viewWidth;
                 canvas.height = image.height * scale;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(image, 0, 0, viewWidth, image.height * scale);
+                ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
                 resolve(canvas);
             };
         } catch (e) {
@@ -66,7 +68,7 @@ export function drawImageOnCanvas(
 }
 
 export function chooseOne(detections: any[], canvas: HTMLCanvasElement,
-    duration: number = 3000, callback: (chooseOne: number) => void): number {
+    duration: number, callback: (chooseOne: number) => void): number {
     boxChangeTime = lastRender = Date.now();
     animationEndTime = lastRender + duration;
     animate(detections, canvas, 0, animationEndTime, callback);
@@ -93,7 +95,7 @@ function animate(detections: any[], canvas: HTMLCanvasElement,
 
 export function drawDetections(detections: any[], canvas: HTMLCanvasElement, current: number) {
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-    context.lineWidth = 2;
+    context.lineWidth = canvas.width * BOX_LINE_WIDTH_MULTIPLY_FACTOR;
     context.strokeStyle = 'white';
 
     detections.forEach((detection, index) => {
@@ -111,7 +113,9 @@ export function getCurrentFaceAsURL(
 ): string {
     const { x, y, width, height } = face.box;
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-    const imageData = ctx.getImageData(x + 2, y + 2, width - 4, height - 4) as ImageData;
+    const padding = canvas.width * BOX_LINE_WIDTH_MULTIPLY_FACTOR;
+    const imageData = ctx.getImageData(x + padding, y + padding,
+                                        width - 2 * padding, height - 2 * padding) as ImageData;
 
     const tempCanvas: HTMLCanvasElement = document.createElement('canvas');
     tempCanvas.width = width;

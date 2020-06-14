@@ -11,8 +11,6 @@ import * as faceHelper from '../helpers/faceHelper'
 import { ResultModal } from './ResultModal';
 import { FaceDetection } from 'face-api.js';
 
-import truthDareList from '../truthDareList'
-
 const CAPTURE_IMAGE_STAGE = 'CAPTURE_IMAGE_STAGE';
 const SHUFFLE_FACES_STAGE = 'SHUFFLE_FACES_STAGE';
 
@@ -23,7 +21,8 @@ const Home: React.FC = () => {
   const [isLoading, setLoading] = useState(true);
   const [hintText, setHintText] = useState('Click a group selfie to start.');
   const [isResultModalVisible, setResultModalVisible] = useState(false);
-  const [chosenOne, setChosenOne] = useState({ image: '', text: '' });
+  const [chosenOne, setChosenOne] = useState('');
+  const [chosenText, setChosenText] = useState('');
   const [faces, setFaces] = useState<FaceDetection[]>([]);
   const [stage, setStage] = useState(CAPTURE_IMAGE_STAGE);
   let fabButton;
@@ -49,21 +48,18 @@ const Home: React.FC = () => {
   }
 
   function handleShuffleClick() {
-    setChosenOne({
-      image: '',
-      text: ''
-    });
+    setChosenOne('');
+    setChosenText('');
+    setHintText('');
+    setResultModalVisible(false);
     faceHelper.chooseOne(
       faces,
       canvasRef.current as unknown as HTMLCanvasElement,
       3000,
       (chosenIndex) => {
-        setChosenOne({
-          image: faceHelper.getCurrentFaceAsURL(
-            canvasRef.current as unknown as HTMLCanvasElement, faces[chosenIndex]
-          ),
-          text: 'Winner pays the bill'
-        });
+        setChosenOne(faceHelper.getCurrentFaceAsURL(
+          canvasRef.current as unknown as HTMLCanvasElement, faces[chosenIndex]
+        ));
         setResultModalVisible(true);
       }
     );
@@ -97,6 +93,7 @@ const Home: React.FC = () => {
       <IonIcon icon={shuffleOutline}></IonIcon>
     </IonFabButton>;
   }
+
   return (
     <IonPage>
       <IonContent>
@@ -112,11 +109,16 @@ const Home: React.FC = () => {
               }
             </IonButtons>
           </IonFab>
-          <canvas ref={canvasRef} /><br />
+          <canvas style={{ width: "100%" }} ref={canvasRef} /><br />
         </div>
-        <ResultModal isResultModalVisible={isResultModalVisible}
+        <ResultModal
+          isResultModalVisible={isResultModalVisible}
           setResultModalVisible={setResultModalVisible}
-          chosenOne={chosenOne} />
+          chosenOne={chosenOne}
+          chosenText={chosenText}
+          setChosenText={setChosenText}
+          handleShuffleClick={handleShuffleClick}
+        />
       </IonContent>
     </IonPage>
   );
