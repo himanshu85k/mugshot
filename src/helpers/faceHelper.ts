@@ -7,7 +7,7 @@ let animationEndTime: number;
 let current = 0;
 
 const BOX_COLOR_CHANGE_DURATION = 80;
-const BOX_HIGHLIGHT_COLOR = '#0ABF00';
+const BOX_HIGHLIGHT_COLOR = '#372772';
 const BOX_NORMAL_COLOR = '#FFFFFF';
 const MODEL_URL = process.env.PUBLIC_URL + '/models';
 const IMAGE_RESIZE_TO_WIDTH = 2000;

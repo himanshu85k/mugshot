@@ -1,8 +1,7 @@
 import {
-  IonContent, IonPage, IonLoading, IonFab, IonIcon, IonFabButton,
-  IonText, IonButtons, isPlatform
+  IonContent, IonPage, IonLoading, isPlatform
 } from '@ionic/react';
-import { cameraOutline, shuffleOutline } from 'ionicons/icons';
+import { camera, shuffle } from 'ionicons/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import './Home.css';
 
@@ -10,6 +9,7 @@ import { addNewToGallery } from '../helpers/cameraHelper';
 import * as faceHelper from '../helpers/faceHelper'
 import { ResultModal } from './ResultModal';
 import { FaceDetection } from 'face-api.js';
+import ActionTextButton from '../components/ActionTextButton';
 
 const CAPTURE_IMAGE_STAGE = 'CAPTURE_IMAGE_STAGE';
 const SHUFFLE_FACES_STAGE = 'SHUFFLE_FACES_STAGE';
@@ -85,13 +85,11 @@ const Home: React.FC = () => {
   }
 
   if (stage === CAPTURE_IMAGE_STAGE) {
-    fabButton = <IonFabButton onClick={handleCameraClick}>
-      <IonIcon icon={cameraOutline}></IonIcon>
-    </IonFabButton>;
+    fabButton =
+      <ActionTextButton icon={camera} text={hintText} onClick={handleCameraClick} />
   } else if (stage === SHUFFLE_FACES_STAGE) {
-    fabButton = <IonFabButton onClick={handleShuffleClick}>
-      <IonIcon icon={shuffleOutline}></IonIcon>
-    </IonFabButton>;
+    fabButton =
+      <ActionTextButton icon={shuffle} text={hintText} onClick={handleShuffleClick} />
   }
 
   return (
@@ -99,23 +97,18 @@ const Home: React.FC = () => {
       <IonContent>
         <div ref={divRef} className='main-container'>
           <IonLoading isOpen={isLoading} showBackdrop={true} />
-          {
-            hintText ?
-              <IonText className='hint-text'>{hintText}</IonText> : ''
-          }
-          <IonFab className='fab-button' horizontal='center'>
-            <IonButtons>
-              {fabButton}
-              {
-                stage === CAPTURE_IMAGE_STAGE && isPlatform('desktop') &&
-                <input type='file' accept='image/png, image/jpeg' onChange={handleFilePick} />
-              }
-            </IonButtons>
-          </IonFab>
+
+          {fabButton}
+
           <canvas
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             ref={canvasRef}
           />
+
+          {
+            stage === CAPTURE_IMAGE_STAGE && isPlatform('desktop') &&
+            <input type='file' accept='image/png, image/jpeg' onChange={handleFilePick} />
+          }
         </div>
         <ResultModal
           isResultModalVisible={isResultModalVisible}

@@ -22,18 +22,18 @@ export function ResultModal(props: any) {
     if (!props.chosenText) {
         footer =
             <IonButtons>
-                <IonButton size='large' color="secondary" fill="solid" expand="block" shape="round"
+                <IonButton size='large' color='secondary' fill='solid' expand='block' shape='round'
                     onClick={() => handleTruthDareClick('truth', props.setChosenText)}>
                     Truth
                 </IonButton>
-                <IonButton size='large' color="secondary" fill="solid" expand="block" shape="round"
+                <IonButton size='large' color='tertiary' fill='solid' expand='block' shape='round'
                     onClick={() => handleTruthDareClick('dare', props.setChosenText)}>
                     Dare
                 </IonButton>
             </IonButtons>;
     } else {
         footer =
-            <div className="flex-column">
+            <div className='flex-column'>
                 <p style={{color: 'white'}}>{props.chosenText}</p><br />
                 <IonFabButton onClick={props.handleShuffleClick}>
                     <IonIcon icon={shuffleOutline}></IonIcon>
@@ -43,13 +43,13 @@ export function ResultModal(props: any) {
 
     return (
         <IonModal isOpen={props.isResultModalVisible} onDidDismiss={() => props.setResultModalVisible(false)}>
-            <div className="flex-column">
-                <div className="flex-row skip-button">
-                    <IonButton size='small' fill='outline' shape="round" onClick={() => props.setResultModalVisible(false)}>
+            <div className='flex-column'>
+                <div className='flex-row skip-button'>
+                    <IonButton size='small' fill='solid' shape='round' onClick={() => props.setResultModalVisible(false)}>
                         Skip
                     </IonButton>
                 </div>
-                <img src={props.chosenOne} alt="" /><br />
+                <img src={props.chosenOne} alt='' /><br />
                 
                 { footer }
             
