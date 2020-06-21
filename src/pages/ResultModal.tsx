@@ -1,6 +1,7 @@
 import React from 'react';
 import { IonModal, IonButton, IonButtons, IonFabButton, IonIcon } from '@ionic/react';
 import { shuffleOutline } from 'ionicons/icons';
+import './ResultModal.css';
 
 import truthDareList from '../truthDareList'
 
@@ -22,11 +23,11 @@ export function ResultModal(props: any) {
     if (!props.chosenText) {
         footer =
             <IonButtons>
-                <IonButton size='large' color='secondary' fill='solid' expand='block' shape='round'
+                <IonButton className="truth-dare-button" size='large' color='secondary' fill='outline' expand='block' shape='round'
                     onClick={() => handleTruthDareClick('truth', props.setChosenText)}>
                     Truth
                 </IonButton>
-                <IonButton size='large' color='tertiary' fill='solid' expand='block' shape='round'
+                <IonButton className="truth-dare-button" size='large' color='tertiary' fill='outline' expand='block' shape='round'
                     onClick={() => handleTruthDareClick('dare', props.setChosenText)}>
                     Dare
                 </IonButton>
@@ -34,7 +35,7 @@ export function ResultModal(props: any) {
     } else {
         footer =
             <div className='flex-column'>
-                <p style={{color: 'white'}}>{props.chosenText}</p><br />
+                <p className='chosen-text'>{props.chosenText}</p>
                 <IonFabButton onClick={props.handleShuffleClick}>
                     <IonIcon icon={shuffleOutline}></IonIcon>
                 </IonFabButton>
@@ -46,13 +47,11 @@ export function ResultModal(props: any) {
             <div className='flex-column'>
                 <div className='flex-row skip-button'>
                     <IonButton size='small' fill='solid' shape='round' onClick={() => props.setResultModalVisible(false)}>
-                        Skip
+                        skip
                     </IonButton>
                 </div>
-                <img src={props.chosenOne} alt='' /><br />
-                
-                { footer }
-            
+                <img src={props.chosenOne} alt='' />                
+                { footer }            
             </div>
         </IonModal >
     );

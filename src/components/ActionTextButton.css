@@ -1,16 +1,14 @@
 .fab-button {
-    /* top: 85vh;
-    position: fixed; */
     position: absolute;
     left: 92%;
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 .hint-text {
-    font-size: 20px;
-    padding: 13px 40px;
-    border-radius: 55px;
+    padding: 0.7em 2em 0.7em 1.4em;
+    border-radius: 3em;
     text-align: center;
+    font-size: var(--button-font-size);
     background: var(--ion-color-primary-shade);
 }
 
@@ -19,7 +17,7 @@
     position: fixed;
     top: 85vh;
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translate(-56%, 0);
     align-items: center;
 }
 

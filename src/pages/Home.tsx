@@ -73,9 +73,9 @@ const Home: React.FC = () => {
     faceHelper.drawDetections(detectedFaces, canvas, -1);
     // TODO: Add ability to tag more faces
     if (detectedFaces.length === 0) {
-      setHintText('Can\'t find any faces. Try Again?');
+      setHintText('Can\'t find any faces. Try Again.');
     } else if (detectedFaces.length === 1) {
-      setHintText('Seems like you are the only one here. Try Again with a few friends around?');
+      setHintText('Seems like you are the only one here. Try Again.');
     } else {
       setHintText('Done! Tap shuffle to start!');
       setFaces(detectedFaces);
