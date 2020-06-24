@@ -14,7 +14,7 @@
 }
 
 .skip-button ion-button {
-    text-transform: capitalize;
+    text-transform: lowercase;
     font-size: 0.9em;
 }
 
@@ -32,6 +32,5 @@
 }
 
 img {
-    padding: 20px;
-    padding-bottom: 30px;
+    padding: 40px;
 }

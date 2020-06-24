@@ -9,12 +9,7 @@ export default function ActionTextButton(props: any) {
                 props.text ?
                     <IonText className='hint-text'>{props.text}</IonText> : ''
             }
-            <IonFabButton className='fab-button'
-                style={
-                    props.text ?
-                        {} : { transform: 'translate(-50%, 0)' }
-                }
-            >
+            <IonFabButton className='fab-button'>
                 <IonIcon icon={props.icon}></IonIcon>
             </IonFabButton>
         </div>

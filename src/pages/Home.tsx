@@ -1,5 +1,5 @@
 import {
-  IonContent, IonPage, IonLoading, isPlatform
+  IonContent, IonPage, IonLoading, isPlatform, IonButton
 } from '@ionic/react';
 import { camera, shuffle } from 'ionicons/icons';
 import React, { useEffect, useRef, useState } from 'react';
@@ -15,6 +15,8 @@ const CAPTURE_IMAGE_STAGE = 'CAPTURE_IMAGE_STAGE';
 const SHUFFLE_FACES_STAGE = 'SHUFFLE_FACES_STAGE';
 
 const Home: React.FC = () => {
+
+  const appTitle = 'FaceOff';
 
   const canvasRef = useRef(null);
   const divRef = useRef(null);
@@ -65,6 +67,19 @@ const Home: React.FC = () => {
     );
   }
 
+  function handleResetClick() {
+    setHintText('Click a group selfie to start');
+    setResultModalVisible(false);
+    setChosenOne('');
+    setChosenText('');
+    setFaces([]);
+    setStage(CAPTURE_IMAGE_STAGE);
+
+    const canvas = canvasRef.current as unknown as HTMLCanvasElement;
+    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   async function drawCanvasAndFaceDetections(photo: { webviewPath: string }) {
     const canvas = canvasRef.current as unknown as HTMLCanvasElement;
     const canvasParentDiv = divRef.current as unknown as HTMLDivElement;
@@ -96,6 +111,15 @@ const Home: React.FC = () => {
     <IonPage>
       <IonContent>
         <div ref={divRef} className='main-container'>
+          {
+            stage === SHUFFLE_FACES_STAGE &&
+            <IonButton size='small' fill='solid' shape='round' className="reset-button"
+              onClick={handleResetClick}
+            >
+              reset
+            </IonButton>
+          }
+          <h1 className="title">{appTitle}</h1>
           <IonLoading isOpen={isLoading} showBackdrop={true} />
 
           {fabButton}

@@ -1,14 +1,15 @@
 .fab-button {
     position: absolute;
-    left: 92%;
-    transform: scale(1.1);
+    right: 0em;
+    transform: scale(1.1) translateX(50%);
 }
 
 .hint-text {
-    padding: 0.7em 2em 0.7em 1.4em;
-    border-radius: 3em;
+    padding: 15px 32px 15px 15px;
+    border-radius: 2em;
     text-align: center;
     font-size: var(--button-font-size);
+    line-height: 1.2em;
     background: var(--ion-color-primary-shade);
 }
 
