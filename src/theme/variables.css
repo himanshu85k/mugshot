@@ -3,7 +3,10 @@ http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
+@font-face {
+  font-family: 'Baloo-Medium';
+  src: local('Baloo-Medium'), url(../fonts/BalooBhaina2-Medium.ttf) format('truetype');
+}
 
 :root {
   /** primary **/
@@ -78,7 +81,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
-  --ion-font-family: 'Baloo 2', cursive;
+  --ion-font-family: 'Baloo-Medium', cursive;
   --button-font-size: 1.1em;
 }
 

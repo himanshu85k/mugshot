@@ -2,6 +2,7 @@
 .main-container {
     min-height: 100vh;
     max-width: 800px;
+    margin: auto;
 }
 
 .flex-column {
@@ -37,4 +38,48 @@
     right: 10px;
     top: 10px;
     text-transform: lowercase;
+}
+
+.rules-text {
+    width: 80%;
+    margin: auto;
+}
+
+.button {
+    --padding-top: 0.88em !important;
+    --padding-bottom: 0.8em !important;
+    --padding-end: 1em !important;
+    --padding-start: 1em !important;
+    margin: 0 0.5em !important;
+    text-transform: capitalize;
+    font-size: 1.3em !important;
+}
+
+.chosen-text {
+    font-size: 1.3em;
+    color: white;
+    padding: 0 40px;
+    text-align: center;
+}
+
+.skip-button {
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.skip-button ion-button {
+    text-transform: lowercase;
+    font-size: 0.9em;
+}
+
+
+
+.result-modal {
+    --height: fit-content;
+    --width: fit-content;
+    border-radius: 2em;
+}
+
+img {
+    padding: 40px;
 }
