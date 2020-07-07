@@ -12,22 +12,6 @@ useEffect(() => {
         props.setResultModalVisible(false);
     }
 
-    // if (!props.chosenText) {
-    //     footer = <IonButton className="button" size='large' color='secondary'
-    //         fill='outline' expand='block' shape='round'
-    //         onClick={handleDareClick}>
-    //         Truth
-    //             </IonButton>
-    // } else {
-    //     footer =
-    //         <div className='flex-column'>
-    //             <p className='chosen-text'>{props.chosenText}</p>
-    //             <IonFabButton onClick={props.handleShuffleClick}>
-    //                 <IonIcon icon={shuffleOutline}></IonIcon>
-    //             </IonFabButton>
-    //         </div>;
-    // }
-
     return (
         <IonModal isOpen={props.isResultModalVisible} onDidDismiss={closeModal}>
             <div className='flex-column'>

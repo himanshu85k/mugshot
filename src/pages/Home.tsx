@@ -14,10 +14,12 @@ import WinnerModal from './WinnerModal'
 import dareList from '../dareList';
 
 
-const appTitle = 'TrulyLucky';
+const appTitle = 'MugShot';
 const CAPTURE_IMAGE_STAGE = 'CAPTURE_IMAGE_STAGE';
 const SHUFFLE_FACES_STAGE = 'SHUFFLE_FACES_STAGE';
 const ROUNDS_PER_GAME = 9;
+const MIN_ROUNDS = 5;
+const MAX_ROUNDS = 99;
 
 let currentRound = 0;
 let facesChosen = new Set<number>();
@@ -27,6 +29,7 @@ const Home: React.FC = () => {
 
   const canvasRef = useRef(null);
   const divRef = useRef(null);
+  const numRoundsRef = useRef(null);
   const [isLoading, setLoading] = useState(true);
   const [hintText, setHintText] = useState('Click a group selfie to begin.');
   const [isResultModalVisible, setResultModalVisible] = useState(false);
@@ -74,12 +77,16 @@ const Home: React.FC = () => {
         ));
         facesChosen.add(chosenIndex);
         console.log('faces ', facesChosen, 'c len', facesChosen.size, 'f len', faces.length);
-        if (facesChosen.size === faces.length - 1) {
+        if (currentRound >= numRounds && facesChosen.size === faces.length - 1) {
           console.log('finding winner ');
           for (let i = 0; i < faces.length; i++) {
             if (!facesChosen.has(i)) {
               console.log('winner ', i);
-
+              setChosenOne(faceHelper.getCurrentFaceAsURL(
+                canvasRef.current as unknown as HTMLCanvasElement, faces[i]
+              ));
+              setWinnerModalVisible(true);
+              return;
             }
           }
         }
@@ -122,6 +129,25 @@ const Home: React.FC = () => {
     setLoading(false);
   }
 
+  async function focusToNumRounds() {
+    const el = await (numRoundsRef as any).current.getInputElement();
+    el.focus();
+  }
+
+  function handleInput(event: any) {
+    console.log('DEBUG: event ', event);
+    const input = event.target.value || '0';
+    const value = parseInt(input, 10);
+    console.log('DEBUG: input ', value);
+    if (value < MIN_ROUNDS) {
+      setNumRounds(MIN_ROUNDS);
+    } else if (value > MAX_ROUNDS) {
+      setNumRounds(MAX_ROUNDS);
+    } else {
+      setNumRounds(value);
+    }
+  }
+
   if (stage === CAPTURE_IMAGE_STAGE) {
     fabButton =
       <ActionTextButton icon={camera} text={hintText} onClick={handleCameraClick} />
@@ -149,13 +175,19 @@ const Home: React.FC = () => {
 
           {
             stage === CAPTURE_IMAGE_STAGE &&
-            <p className="rules-text"> <br />
-              A player is randomly chosen upon each shuffle who needs to perform a dare.<br />
-              Last person left without getting dare out of atleast &nbsp;
-              <IonInput type="number" min="5" max="99" value={numRounds}
-                onIonChange={e => setNumRounds(parseInt(e.detail.value!, 10))} />
+            <div className="flex-column">
+              <p className="rules-text"> <br />
+              A player is randomly chosen upon each shuffle. He/She would have to perform a dare.<br />
+              The player to get least number of dares out of at least &nbsp;
+              <IonInput className="rounds-input" ref={numRoundsRef} type="number" value={numRounds}
+                  onIonBlur={handleInput} />
                 &nbsp; rounds WINS!
-            </p>
+              </p> <br /><br />
+              <IonButton className="flex-row change-num-rounds" size='small' fill='solid' shape='round' onClick={focusToNumRounds}>
+                Change number of rounds
+              </IonButton>
+            </div>
+
           }
           {
             // for testing purposes only

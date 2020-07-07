@@ -134,7 +134,6 @@ export default [
     "Stand like a flamingo for the next four rounds.",
     "Post an embarrassing picture of yourself online.",
     "Using only your elbows, write a Facebook status and post it.",
-    "Share a shirt with the person to your right for the next 3 rounds.",
     "Do an impression of your favorite celebrity.",
     "Make up a story about the item to your right.",
     "Mime your dream job.",

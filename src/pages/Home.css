@@ -31,6 +31,9 @@
 .title {
     text-align: center;
     font-size: 2.5em;
+    font-family: var(--title-font);
+    margin-top: 35px;
+    margin-bottom: 12px;
 }
 
 .reset-button {
@@ -38,27 +41,29 @@
     right: 10px;
     top: 10px;
     text-transform: lowercase;
+    font-size: 0.9em !important;
 }
 
 .rules-text {
     width: 80%;
     margin: auto;
+    line-height: 1.7em;
 }
 
-.button {
-    --padding-top: 0.88em !important;
-    --padding-bottom: 0.8em !important;
+.winner-button {
+    --padding-top: 0.45em !important;
+    --padding-bottom: 0.3em !important;
     --padding-end: 1em !important;
     --padding-start: 1em !important;
-    margin: 0 0.5em !important;
+    margin: 2em 0.5em !important;
     text-transform: capitalize;
     font-size: 1.3em !important;
+    font-weight: bolder;
 }
 
 .chosen-text {
     font-size: 1.3em;
     color: white;
-    padding: 0 40px;
     text-align: center;
 }
 
@@ -72,8 +77,6 @@
     font-size: 0.9em;
 }
 
-
-
 .result-modal {
     --height: fit-content;
     --width: fit-content;
@@ -81,5 +84,32 @@
 }
 
 img {
-    padding: 40px;
+    padding-top: 70px;
+}
+
+.rounds-input {
+    width: 2.2em;
+    display: inline-block;
+    border: 3px solid var(--ion-color-primary);
+    border-radius: 7px;
+    font-weight: bold;
+    line-height: 1em;
+    text-transform: capitalize;
+}
+
+.change-num-rounds {
+    font-size: 0.9em !important;
+    text-transform: capitalize;
+}
+
+.rounds-input input {
+    text-align: center !important;
+    padding: 0px !important;
+    text-align: center !important;
+}
+
+.rounds-input input::-webkit-outer-spin-button,
+.rounds-input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
