@@ -191,8 +191,8 @@ const Home: React.FC = () => {
           }
           {
             // for testing purposes only
-            stage === CAPTURE_IMAGE_STAGE && isPlatform('desktop') &&
-            <input type='file' accept='image/png, image/jpeg' onChange={handleFilePick} />
+            // stage === CAPTURE_IMAGE_STAGE && isPlatform('desktop') &&
+            // <input type='file' accept='image/png, image/jpeg' onChange={handleFilePick} />
           }
 
           <canvas
