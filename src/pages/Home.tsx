@@ -2,7 +2,7 @@ import {
   IonContent, IonPage, IonLoading, isPlatform, IonButton, IonInput
 } from '@ionic/react';
 import { camera, shuffle } from 'ionicons/icons';
-import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Home.css';
 
 import { addNewToGallery } from '../helpers/cameraHelper';
