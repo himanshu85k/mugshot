@@ -1,4 +1,4 @@
-image: node:12.11
+image: marcoturi/ionic:latest
 
 pages:
   stage: deploy
