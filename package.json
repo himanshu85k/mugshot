@@ -27,8 +27,8 @@
     "typescript": "3.8.3"
   },
   "scripts": {
-    "start": "ionic-app-scripts serve",
-    "build": "ionic-app-scripts build"
+    "start": "ionic serve",
+    "build": "ionic build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "2.1.0",
-    "@ionic/app-scripts": "^3.1.11"
+    "@ionic/app-scripts": "^3.2.4"
   },
   "description": "An Ionic project"
 }
