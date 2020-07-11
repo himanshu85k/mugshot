@@ -1,17 +1,17 @@
 {
-  "appId": "who.ionic",
-  "appName": "who-ionic",
+  "appId": "com.moontrail.mugshot",
+  "appName": "mugshot",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0,
-      "backgroundColor": "#00000000",
+      "backgroundColor": "#12121200",
       "androidScaleType": "CENTER_CROP",
       "androidSpinnerStyle": "large",
-      "spinnerColor": "#ffffff",
-      "androidSplashResourceName": "",
+      "spinnerColor": "#121212",
+      "androidSplashResourceName": "splash",
       "showSpinner": true
     }
   },
