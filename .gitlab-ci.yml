@@ -1,4 +1,4 @@
-image:  marcoturi/ionic:latest
+# image:  marcoturi/ionic:latest
 
 pages:
   stage: deploy
@@ -6,6 +6,9 @@ pages:
     paths:
       - node_modules/
   script:
+    # - npm install
+    # - npm run build
+    # - rm -rf public
     - mv build public
   artifacts:
     paths:
