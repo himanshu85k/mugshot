@@ -27,8 +27,8 @@
     "typescript": "3.8.3"
   },
   "scripts": {
-    "start": "ionic serve",
-    "build": "ionic build"
+    "start": "ionic-app-scripts build",
+    "build": "ionic-app-scripts serve"
   },
   "eslintConfig": {
     "extends": "react-app"
