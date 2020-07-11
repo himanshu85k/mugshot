@@ -7,7 +7,7 @@ pages:
       - node_modules/
   script:
     - npm install
-    - ionic build
+    - npm run build
     - rm -rf public
     - mv build public
   artifacts:
