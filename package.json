@@ -27,8 +27,8 @@
     "typescript": "3.8.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "ionic serve",
+    "build": "ionic build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
