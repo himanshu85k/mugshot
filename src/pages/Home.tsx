@@ -42,6 +42,7 @@ const Home: React.FC = () => {
   let fabButton;
 
   useEffect(() => {
+    console.log('Home.tsx loaded');
     faceHelper.loadModels(setLoading)
   }, []);
 
