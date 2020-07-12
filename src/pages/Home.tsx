@@ -42,7 +42,6 @@ const Home: React.FC = () => {
   let fabButton;
 
   useEffect(() => {
-    console.log('Home.tsx loaded');
     faceHelper.loadModels(setLoading)
   }, []);
 
@@ -77,12 +76,12 @@ const Home: React.FC = () => {
           canvasRef.current as unknown as HTMLCanvasElement, faces[chosenIndex]
         ));
         facesChosen.add(chosenIndex);
-        console.log('faces ', facesChosen, 'c len', facesChosen.size, 'f len', faces.length);
+        // console.log('faces ', facesChosen, 'c len', facesChosen.size, 'f len', faces.length);
         if (currentRound >= numRounds && facesChosen.size === faces.length - 1) {
-          console.log('finding winner ');
+          // console.log('finding winner ');
           for (let i = 0; i < faces.length; i++) {
             if (!facesChosen.has(i)) {
-              console.log('winner ', i);
+              // console.log('winner ', i);
               setChosenOne(faceHelper.getCurrentFaceAsURL(
                 canvasRef.current as unknown as HTMLCanvasElement, faces[i]
               ));
@@ -136,10 +135,8 @@ const Home: React.FC = () => {
   }
 
   function handleInput(event: any) {
-    console.log('DEBUG: event ', event);
     const input = event.target.value || '0';
     const value = parseInt(input, 10);
-    console.log('DEBUG: input ', value);
     if (value < MIN_ROUNDS) {
       setNumRounds(MIN_ROUNDS);
     } else if (value > MAX_ROUNDS) {

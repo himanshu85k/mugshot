@@ -19,7 +19,6 @@ export async function addNewToGallery() {
         };
         return { ...photo };
     } catch (e) {
-        console.log(`Exception occurred in addNewToGallery(): ${e}`);
         return null;
     }
 }

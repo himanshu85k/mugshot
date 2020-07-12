@@ -25,7 +25,6 @@ import { Capacitor, Plugins } from '@capacitor/core';
 const App: React.FC = () => {
 
   useEffect(() => {
-    console.log('App loaded');
     if (Capacitor.isNative) {
       Plugins.App.addListener('backButton', () => {
         if (window.location.pathname === '/') {
