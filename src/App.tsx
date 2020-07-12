@@ -25,7 +25,7 @@ import { Capacitor, Plugins } from '@capacitor/core';
 const App: React.FC = () => {
 
   useEffect(() => {
-    console.log('App.tsx loaded');
+    console.log('App loaded');
     if (Capacitor.isNative) {
       Plugins.App.addListener('backButton', () => {
         if (window.location.pathname === '/') {
@@ -39,9 +39,7 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route path="/home" component={Home} exact={true} />
-          {/* <Route exact path="/" render={() => <Redirect to="/home" />} /> */}
-          <Redirect exact from="/" to="/home" />
+          <Home></Home>
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
