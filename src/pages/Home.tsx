@@ -206,7 +206,7 @@ const Home: React.FC = () => {
           }
           {
             <input className="invisible" ref={filePickerRef} type="file"
-             accept="image/jpeg,image/jpg,image/x-png;capture=camera" onChange={handleFilePick} />
+             accept="image/*;capture=camera" onChange={handleFilePick} />
           }
 
           <canvas

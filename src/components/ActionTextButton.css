@@ -16,7 +16,7 @@
 .action-button {
     display: flex;
     position: fixed;
-    top: 85vh;
+    top: 80vh;
     left: 50%;
     transform: translate(-56%, 0);
     align-items: center;
