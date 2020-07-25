@@ -1,5 +1,7 @@
 import * as faceapi from 'face-api.js'
 import { FaceDetection } from 'face-api.js';
+import { Plugins } from '@capacitor/core';
+const { Toast } = Plugins;
 
 let lastRender: number;
 let boxChangeTime: number;
@@ -19,7 +21,7 @@ export async function loadModels(setLoading: React.Dispatch<React.SetStateAction
         // await faceapi.loadFaceLandmarkModel(MODEL_URL)
         // await faceapi.loadFaceRecognitionModel(MODEL_URL)
     } catch (e) {
-        console.log(`Exception occurred in loadModels(): ${e}`);
+        toast(`Something went wrong when trying to load models: ${e}`);
     }
     setLoading(false);
 }
@@ -59,7 +61,7 @@ export function drawImageOnCanvas(
                 resolve(canvas);
             };
         } catch (e) {
-            console.log(`Exception occurred in drawImageOnCanvas(): ${e}`)
+            toast(`Something went wrong while trying to draw image on canvas: ${e}`)
             reject();
         }
     });
@@ -115,7 +117,7 @@ export function getCurrentFaceAsURL(
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
     const padding = canvas.width * BOX_LINE_WIDTH_MULTIPLY_FACTOR;
     const imageData = ctx.getImageData(x + padding, y + padding,
-                                        width - 2 * padding, height - 2 * padding) as ImageData;
+        width - 2 * padding, height - 2 * padding) as ImageData;
 
     const tempCanvas: HTMLCanvasElement = document.createElement('canvas');
     tempCanvas.width = width;
@@ -126,3 +128,8 @@ export function getCurrentFaceAsURL(
     return tempCanvas.toDataURL('image/png');
 }
 
+async function toast(message: string) {
+    await Toast.show({
+        text: message
+    });
+}

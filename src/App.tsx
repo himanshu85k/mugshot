@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import React from 'react';
+import { IonApp, IonRouterOutlet, useIonViewDidEnter } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 
@@ -20,19 +19,13 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 import './theme/variables.css';
-import { Capacitor, Plugins } from '@capacitor/core';
+import { Plugins } from '@capacitor/core';
 
 const App: React.FC = () => {
 
-  useEffect(() => {
-    if (Capacitor.isNative) {
-      Plugins.App.addListener('backButton', () => {
-        if (window.location.pathname === '/') {
-          Plugins.App.exitApp()
-        }
-      })
-    }
-  }, []);
+  useIonViewDidEnter(() => {
+    Plugins.App.addListener('backButton', Plugins.App.exitApp)
+  })
 
   return (
     <IonApp>

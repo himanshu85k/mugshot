@@ -1,5 +1,6 @@
 {
   "homepage": "https://himanshu85k.github.io/mugshot",
+  "proxy": "http://localhost:8100",
   "name": "mugshot",
   "version": "0.0.1",
   "private": true,
@@ -29,7 +30,8 @@
   },
   "scripts": {
     "start": "ionic serve",
-    "build": "ionic build"
+    "build": "ionic build",
+    "sync": "ionic capacitor sync"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,8 +49,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.1.0",
-    "@ionic/app-scripts": "^3.2.4"
+    "@capacitor/cli": "2.1.0"
   },
   "description": "An Ionic project"
 }

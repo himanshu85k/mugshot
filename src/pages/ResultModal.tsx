@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { IonModal, IonButton, IonFabButton, IonIcon } from '@ionic/react';
 import { shuffleOutline } from 'ionicons/icons';
 
 
 export function ResultModal(props: any) {
-
-useEffect(() => {
-},[]);
 
     function closeModal() {
         props.setResultModalVisible(false);

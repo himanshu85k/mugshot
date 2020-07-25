@@ -113,3 +113,8 @@ img {
   -webkit-appearance: none;
   margin: 0;
 }
+
+
+.invisible {
+    display: none
+}

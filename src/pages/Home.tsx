@@ -1,11 +1,11 @@
 import {
-  IonContent, IonPage, IonLoading, isPlatform, IonButton, IonInput
+  IonContent, IonPage, IonLoading, IonButton, IonInput
 } from '@ionic/react';
 import { camera, shuffle } from 'ionicons/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import './Home.css';
 
-import { addNewToGallery } from '../helpers/cameraHelper';
+// import { addNewToGallery } from '../helpers/cameraHelper';
 import * as faceHelper from '../helpers/faceHelper'
 import { ResultModal } from './ResultModal';
 import { FaceDetection } from 'face-api.js';
@@ -22,7 +22,7 @@ const MIN_ROUNDS = 5;
 const MAX_ROUNDS = 99;
 
 let currentRound = 0;
-let facesChosen = new Set<number>();
+let facesChosen: Array<number>;
 let faces: FaceDetection[] = [];
 
 const Home: React.FC = () => {
@@ -30,6 +30,7 @@ const Home: React.FC = () => {
   const canvasRef = useRef(null);
   const divRef = useRef(null);
   const numRoundsRef = useRef(null);
+  const filePickerRef = useRef(null);
   const [isLoading, setLoading] = useState(true);
   const [hintText, setHintText] = useState('Click a group selfie to begin.');
   const [isResultModalVisible, setResultModalVisible] = useState(false);
@@ -46,14 +47,15 @@ const Home: React.FC = () => {
   }, []);
 
   async function handleCameraClick() {
-    setLoading(true);
-    faces = [];
-    const photo = await addNewToGallery();
-    if (photo) {
-      drawCanvasAndFaceDetections(photo);
-    } else {
-      setLoading(false);
-    }
+    // setLoading(true);
+    // faces = [];
+    // const photo = await addNewToGallery();
+    // if (photo) {
+    //   drawCanvasAndFaceDetections(photo);
+    // } else {
+    //   setLoading(false);
+    // }
+    (filePickerRef.current as unknown as HTMLInputElement).click();
   }
 
   async function handleFilePick(e: any) {
@@ -67,7 +69,7 @@ const Home: React.FC = () => {
     currentRound++;
     setHintText(`Round: ${currentRound}`);
     setResultModalVisible(false);
-    faceHelper.chooseOne(
+    faceHelper.chooseOne( // randomly choose a face
       faces,
       canvasRef.current as unknown as HTMLCanvasElement,
       3000,
@@ -75,19 +77,31 @@ const Home: React.FC = () => {
         setChosenOne(faceHelper.getCurrentFaceAsURL(
           canvasRef.current as unknown as HTMLCanvasElement, faces[chosenIndex]
         ));
-        facesChosen.add(chosenIndex);
-        // console.log('faces ', facesChosen, 'c len', facesChosen.size, 'f len', faces.length);
-        if (currentRound >= numRounds && facesChosen.size === faces.length - 1) {
-          // console.log('finding winner ');
-          for (let i = 0; i < faces.length; i++) {
-            if (!facesChosen.has(i)) {
-              // console.log('winner ', i);
-              setChosenOne(faceHelper.getCurrentFaceAsURL(
-                canvasRef.current as unknown as HTMLCanvasElement, faces[i]
-              ));
-              setWinnerModalVisible(true);
-              return;
+        facesChosen[chosenIndex] = ((facesChosen[chosenIndex]) || 0) + 1;
+        if (currentRound >= numRounds) { // try to find a winner
+          // find player with minimum rounds and with no duplicates
+          // console.log(`facesChosen: ${facesChosen}`)
+          let minIndex = facesChosen[0];
+          let duplicateCount = 0;
+          facesChosen.forEach((num, index) => {
+            // find the face which was chosen least number of times
+            if (num < facesChosen[minIndex]) {
+              minIndex = index;
             }
+          });
+          facesChosen.forEach(num => {
+            // find how many other faces have the same count
+            if (num === facesChosen[minIndex]) {
+              duplicateCount++;
+            }
+          });
+          if (duplicateCount === 1) {
+            // the least chosen face is unique 
+            setChosenOne(faceHelper.getCurrentFaceAsURL(
+              canvasRef.current as unknown as HTMLCanvasElement, faces[minIndex]
+            ));
+            setWinnerModalVisible(true);
+            return;
           }
         }
         setChosenText(dareList[Math.floor(Math.random() * dareList.length)]);
@@ -105,6 +119,8 @@ const Home: React.FC = () => {
     setWinnerModalVisible(false);
     currentRound = 0;
     faces = [];
+    facesChosen = []; 
+    // reset facesChosen
     const canvas = canvasRef.current as unknown as HTMLCanvasElement;
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -124,6 +140,7 @@ const Home: React.FC = () => {
     } else {
       setHintText('Done! Tap shuffle!');
       faces = detectedFaces;
+      facesChosen = new Array<number>(faces.length);
       setStage(SHUFFLE_FACES_STAGE);
     }
     setLoading(false);
@@ -188,9 +205,8 @@ const Home: React.FC = () => {
 
           }
           {
-            // for testing purposes only
-            // stage === CAPTURE_IMAGE_STAGE && isPlatform('desktop') &&
-            // <input type='file' accept='image/png, image/jpeg' onChange={handleFilePick} />
+            <input className="invisible" ref={filePickerRef} type="file"
+             accept="image/jpeg,image/jpg,image/x-png;capture=camera" onChange={handleFilePick} />
           }
 
           <canvas
@@ -218,4 +234,3 @@ const Home: React.FC = () => {
 
 export default Home;
 
-// TODO change splash screen
