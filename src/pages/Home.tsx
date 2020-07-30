@@ -258,7 +258,7 @@ const Home: React.FC = () => {
               className="invisible"
               ref={filePickerRef}
               type="file"
-              accept="image/jpeg,image/x-png,image/*;capture=camera"
+              accept="image/jpeg,image/x-png,image/*"
               onChange={handleFilePick}
             />
           }
