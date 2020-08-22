@@ -1,4 +1,4 @@
-# mugshot
+# MugShot
 
 A casual party game available on the Web and Android platforms.
 
